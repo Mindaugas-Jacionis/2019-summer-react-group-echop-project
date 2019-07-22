@@ -1,5 +1,7 @@
 import React from 'react';
-import { Products } from './pages';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
+import { Products, PageNotFound, Cart, Favorites } from './pages';
 import { Layout } from './components';
 
 class App extends React.Component {
@@ -25,9 +27,20 @@ class App extends React.Component {
     const { products, isLoading, error } = this.state;
 
     return (
-      <Layout>
-        <Products products={products} isLoading={isLoading} error={error} />
-      </Layout>
+      <Router>
+        <Layout>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={() => <Products products={products} isLoading={isLoading} error={error} />}
+            />
+            <Route path="/cart" exact component={Cart} />
+            <Route path="/favorites" exact component={Favorites} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </Layout>
+      </Router>
     );
   }
 }
