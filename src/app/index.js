@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Products, PageNotFound, Cart, Favorites } from './pages';
 import { Layout } from './components';
@@ -7,6 +7,7 @@ import { Layout } from './components';
 class App extends React.Component {
   state = {
     products: [],
+    favorites: [],
     isLoading: false,
     error: null,
   };
@@ -17,14 +18,14 @@ class App extends React.Component {
 
     if (response.ok) {
       const json = await response.json();
-      this.setState({ products: json, isLoading: false });
+      this.setState({ products: json, favorites: [json[0].id, json[5].id], isLoading: false });
     } else {
       this.setState({ error: 'Ooops! Monkeys stole our products! 😱👟', isLoading: false });
     }
   }
 
   render() {
-    const { products, isLoading, error } = this.state;
+    const { products, isLoading, error, favorites } = this.state;
 
     return (
       <Router>
@@ -36,7 +37,12 @@ class App extends React.Component {
               render={() => <Products products={products} isLoading={isLoading} error={error} />}
             />
             <Route path="/cart" exact component={Cart} />
-            <Route path="/favorites" exact component={Favorites} />
+            <Route
+              path="/favorites"
+              exact
+              render={() => <Favorites favorites={favorites} products={products} />}
+            />
+            <Redirect exact from="/home" to="/" />
             <Route component={PageNotFound} />
           </Switch>
         </Layout>
