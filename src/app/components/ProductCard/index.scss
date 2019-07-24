@@ -8,6 +8,14 @@
   border: 2px solid #f1e1f1;
   border-top: 0px;
 
+  &__favorite {
+    background: #f1e1f1;
+    
+    .ProductCard--cta button {
+      border-color: #ffffff;
+    }
+  }
+
   &--image {
     height: 150px;
     overflow: hidden;

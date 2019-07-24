@@ -8,6 +8,7 @@ class App extends React.Component {
   state = {
     products: [],
     favorites: [],
+    cart: [],
     isLoading: false,
     error: null,
   };
@@ -18,14 +19,30 @@ class App extends React.Component {
 
     if (response.ok) {
       const json = await response.json();
-      this.setState({ products: json, favorites: [json[0].id, json[5].id], isLoading: false });
+      this.setState({ products: json, isLoading: false });
     } else {
       this.setState({ error: 'Ooops! Monkeys stole our products! 😱👟', isLoading: false });
     }
   }
 
+  toggleFavorite = id => {
+    const { favorites } = this.state;
+
+    if (favorites.includes(id)) {
+      this.setState({ favorites: favorites.filter(favoriteId => favoriteId !== id) });
+    } else {
+      this.setState({ favorites: [...favorites, id] });
+    }
+  };
+
+  addToCart = id => {
+    const { cart } = this.state;
+
+    this.setState({ cart: [...cart, id] });
+  };
+
   render() {
-    const { products, isLoading, error, favorites } = this.state;
+    const { products, isLoading, error, favorites, cart } = this.state;
 
     return (
       <Router>
@@ -34,13 +51,29 @@ class App extends React.Component {
             <Route
               path="/"
               exact
-              render={() => <Products products={products} isLoading={isLoading} error={error} />}
+              render={() => (
+                <Products
+                  toggleFavorite={this.toggleFavorite}
+                  addToCart={this.addToCart}
+                  products={products}
+                  favorites={favorites}
+                  isLoading={isLoading}
+                  error={error}
+                />
+              )}
             />
-            <Route path="/cart" exact component={Cart} />
+            <Route path="/cart" exact render={() => <Cart cart={cart} products={products} />} />
             <Route
               path="/favorites"
               exact
-              render={() => <Favorites favorites={favorites} products={products} />}
+              render={() => (
+                <Favorites
+                  toggleFavorite={this.toggleFavorite}
+                  addToCart={this.addToCart}
+                  favorites={favorites}
+                  products={products}
+                />
+              )}
             />
             <Redirect exact from="/home" to="/" />
             <Route component={PageNotFound} />
