@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './index.scss';
 
 function ProductCard({
@@ -22,7 +23,9 @@ function ProductCard({
         <img alt={`product: ${name}`} src={image} />
       </div>
       <div className="ProductCard--info">
-        <h3>{name}</h3>
+        <Link to={`/product/${id}`}>
+          <h3>{name}</h3>
+        </Link>
         <p>{description}</p>
       </div>
       <div className="ProductCard--cta">

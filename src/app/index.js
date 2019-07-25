@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
-import { Products, PageNotFound, Cart, Favorites } from './pages';
+import { Products, PageNotFound, Cart, Favorites, SingleProduct } from './pages';
 import { Layout } from './components';
+import { ROUTES } from '../constants';
 
 class App extends React.Component {
   state = {
     products: [],
     favorites: [],
     cart: [],
-    isLoading: false,
+    isLoading: true,
     error: null,
   };
 
@@ -65,7 +66,7 @@ class App extends React.Component {
         <Layout>
           <Switch>
             <Route
-              path="/"
+              path={ROUTES.defaultPage}
               exact
               render={() => (
                 <Products
@@ -80,9 +81,13 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route path="/cart" exact render={() => <Cart cart={cart} products={products} />} />
             <Route
-              path="/favorites"
+              path={ROUTES.cart}
+              exact
+              render={() => <Cart cart={cart} products={products} />}
+            />
+            <Route
+              path={ROUTES.favorites}
               exact
               render={() => (
                 <Favorites
@@ -95,7 +100,17 @@ class App extends React.Component {
                 />
               )}
             />
-            <Redirect exact from="/home" to="/" />
+            <Route
+              path={ROUTES.product}
+              exact
+              render={props => {
+                const { id } = props.match.params;
+                const product = products.find(product => product.id === id);
+
+                return <SingleProduct {...props} product={product} isLoading={isLoading} />;
+              }}
+            />
+            <Redirect exact from={ROUTES.home} to={ROUTES.defaultPage} />
             <Route component={PageNotFound} />
           </Switch>
         </Layout>
