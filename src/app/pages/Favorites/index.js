@@ -2,7 +2,7 @@ import React from 'react';
 import './index.scss';
 import { ProductCard } from '../../components';
 
-function Favorites({ favorites, products = [], toggleFavorite, addToCart }) {
+function Favorites({ favorites, products = [], cart, toggleFavorite, addToCart, removeFromCart }) {
   const favoriteProducts = products.filter(product => favorites.includes(product.id));
 
   return (
@@ -15,15 +15,21 @@ function Favorites({ favorites, products = [], toggleFavorite, addToCart }) {
           </span>
         </p>
       )}
-      {favoriteProducts.map(data => (
-        <ProductCard
-          {...data}
-          key={data.id}
-          toggleFavorite={toggleFavorite}
-          addToCart={addToCart}
-          isFavorite
-        />
-      ))}
+      {favoriteProducts.map(data => {
+        const { count = 0 } = cart.find(({ id }) => id === data.id) || {};
+
+        return (
+          <ProductCard
+            {...data}
+            key={data.id}
+            toggleFavorite={toggleFavorite}
+            removeFromCart={removeFromCart}
+            addToCart={addToCart}
+            isFavorite
+            cartCount={count}
+          />
+        );
+      })}
     </div>
   );
 }

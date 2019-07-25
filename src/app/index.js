@@ -35,10 +35,26 @@ class App extends React.Component {
     }
   };
 
-  addToCart = id => {
-    const { cart } = this.state;
+  addToCart = addId => {
+    this.setState(state => {
+      const itemIndex = state.cart.findIndex(({ id }) => id === addId);
 
-    this.setState({ cart: [...cart, id] });
+      if (itemIndex > -1) {
+        return {
+          cart: state.cart.map((cartItem, i) =>
+            i === itemIndex ? { ...cartItem, count: cartItem.count + 1 } : cartItem,
+          ),
+        };
+      }
+
+      return { cart: [...state.cart, { id: addId, count: 1 }] };
+    });
+  };
+
+  removeFromCart = removeId => {
+    this.setState(state => {
+      return { cart: state.cart.filter(({ id }) => id !== removeId) };
+    });
   };
 
   render() {
@@ -55,7 +71,9 @@ class App extends React.Component {
                 <Products
                   toggleFavorite={this.toggleFavorite}
                   addToCart={this.addToCart}
+                  removeFromCart={this.removeFromCart}
                   products={products}
+                  cart={cart}
                   favorites={favorites}
                   isLoading={isLoading}
                   error={error}
@@ -69,9 +87,11 @@ class App extends React.Component {
               render={() => (
                 <Favorites
                   toggleFavorite={this.toggleFavorite}
+                  removeFromCart={this.removeFromCart}
                   addToCart={this.addToCart}
                   favorites={favorites}
                   products={products}
+                  cart={cart}
                 />
               )}
             />

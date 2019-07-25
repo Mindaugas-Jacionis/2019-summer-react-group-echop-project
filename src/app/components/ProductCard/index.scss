@@ -42,6 +42,7 @@
     justify-content: space-between;
 
     button {
+      position: relative;
       border-radius: 3px;
       border: 1px solid #f1e1f1;
       background: transparent;
@@ -49,9 +50,23 @@
       transition: background-color 0.3s;
       cursor: pointer;
 
-      &:hover {
+      &:hover, &:focus {
         background: #f1e1f1;
+        outline: none;
       }
+    }
+
+    &-count {
+      position: absolute;
+      background: #189918;
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      line-height: 20px;
+      right: -10px;
+      top: -7px;
+      color: #fff;
+      font-weight: 700;
     }
   }
 }

@@ -9,8 +9,10 @@ function ProductCard({
   currencySymbol,
   id,
   isFavorite,
+  cartCount,
   toggleFavorite,
   addToCart,
+  removeFromCart,
 }) {
   const className = isFavorite ? 'ProductCard ProductCard__favorite' : 'ProductCard';
 
@@ -33,10 +35,18 @@ function ProductCard({
               {isFavorite ? '❌' : '💜'}
             </span>
           </button>
+          {!!cartCount && (
+            <button type="button" onClick={() => removeFromCart(id)}>
+              <span role="img" aria-label="remove from cart illustration">
+                🗑️
+              </span>
+            </button>
+          )}
           <button type="button" onClick={() => addToCart(id)}>
             <span role="img" aria-label="add to cart illustration">
               🛒
             </span>
+            {!!cartCount && <div className="ProductCard--cta-count">{cartCount}</div>}
           </button>
         </div>
       </div>
