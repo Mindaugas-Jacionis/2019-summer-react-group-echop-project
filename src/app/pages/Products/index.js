@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './index.scss';
 import { Loader, ProductCard } from '../../components';
+import shop from '../../../shop';
 
 function Products({ isLoading, error, products = [] }) {
   return (
@@ -16,9 +17,7 @@ function Products({ isLoading, error, products = [] }) {
 }
 
 function mapStateToProps(state) {
-  const { products } = state.shop;
-
-  return { products };
+  return { products: shop.selectors.getProducts(state) };
 }
 
 export default connect(mapStateToProps)(Products);

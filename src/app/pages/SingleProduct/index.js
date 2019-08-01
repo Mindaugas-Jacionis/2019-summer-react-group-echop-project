@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import './index.scss';
 import { ROUTES } from '../../../constants';
 import { Loader } from '../../components';
+import shop from '../../../shop';
 
 function SingleProduct({ history, product, isLoading }) {
   if (!product && !isLoading) {
@@ -32,11 +33,15 @@ function SingleProduct({ history, product, isLoading }) {
   );
 }
 
-function mapStateToProps(state, { match: { params } }) {
-  const { products } = state.shop;
-  const product = products.find(({ id }) => id === params.id);
-
-  return { product };
+function mapStateToProps(
+  state,
+  {
+    match: {
+      params: { id },
+    },
+  },
+) {
+  return { product: shop.selectors.getProductById(state, id) };
 }
 
 export default connect(mapStateToProps)(SingleProduct);

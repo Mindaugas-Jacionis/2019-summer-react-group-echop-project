@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './index.scss';
 import { ProductCard } from '../../components';
+import shop from '../../../shop';
 
 function Error() {
   return (
@@ -26,10 +27,7 @@ function Favorites({ favorites, ...restProps }) {
 }
 
 function mapStateToProps(state) {
-  const { products, favorites } = state.shop;
-  const favoriteProducts = products.filter(product => favorites.includes(product.id));
-
-  return { favorites: favoriteProducts };
+  return { favorites: shop.selectors.getFavoriteProducts(state) };
 }
 
 export default connect(mapStateToProps)(Favorites);
