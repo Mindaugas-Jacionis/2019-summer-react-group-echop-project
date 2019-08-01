@@ -59,13 +59,12 @@ function ProductCard({
   );
 }
 
-function mapStateToProps(state, props) {
-  const { cart, favorites } = state.shop;
-  const item = cart.find(({ id }) => id === props.id);
+function mapStateToProps(state, { id }) {
+  const item = shop.selectors.getCartItem(state, id);
 
   return {
     cartCount: item ? item.count : 0,
-    isFavorite: favorites.includes(props.id),
+    isFavorite: shop.selectors.isProductFavorite(state, id),
   };
 }
 
