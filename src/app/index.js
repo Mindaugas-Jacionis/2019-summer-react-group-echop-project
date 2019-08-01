@@ -7,13 +7,14 @@ import { Layout } from './components';
 import { useFetch } from './hooks';
 import store from './state';
 import { ROUTES } from '../constants';
+import shop from '../shop';
 
 function onError() {
   return 'Ooops! Monkeys stole our products! 😱👟';
 }
 
 function onSuccess(payload) {
-  store.dispatch({ type: 'SET_PRODUCTS', payload });
+  store.dispatch({ type: shop.actionTypes.SET_PRODUCTS, payload });
 
   return payload;
 }
@@ -42,12 +43,7 @@ function App() {
             <Route
               path={ROUTES.product}
               exact
-              render={props => {
-                const { id } = props.match.params;
-                const product = products.find(product => product.id === id);
-
-                return <SingleProduct {...props} product={product} isLoading={isLoading} />;
-              }}
+              render={props => <SingleProduct {...props} isLoading={isLoading} />}
             />
             <Redirect exact from={ROUTES.home} to={ROUTES.defaultPage} />
             <Route component={PageNotFound} />

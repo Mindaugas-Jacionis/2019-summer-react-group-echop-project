@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import './index.scss';
 import { ROUTES } from '../../../constants';
@@ -31,4 +32,11 @@ function SingleProduct({ history, product, isLoading }) {
   );
 }
 
-export default SingleProduct;
+function mapStateToProps(state, { match: { params } }) {
+  const { products } = state.shop;
+  const product = products.find(({ id }) => id === params.id);
+
+  return { product };
+}
+
+export default connect(mapStateToProps)(SingleProduct);
