@@ -14,13 +14,13 @@ function onError() {
 }
 
 function onSuccess(payload) {
-  store.dispatch({ type: shop.actionTypes.SET_PRODUCTS, payload });
+  store.dispatch(shop.actions.setProducts(payload));
 
   return payload;
 }
 
 function App() {
-  const { loading: isLoading, products, error } = useFetch({
+  const { loading: isLoading, error } = useFetch({
     onError,
     onSuccess,
     src: 'https://boiling-reaches-93648.herokuapp.com/food-shop/products',
