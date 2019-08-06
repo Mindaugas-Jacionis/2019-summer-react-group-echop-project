@@ -4,7 +4,7 @@ import './index.scss';
 import { Loader, ProductCard } from '../../components';
 import shop from '../../../shop';
 
-function Products({ isLoading, error, products = [] }) {
+function Products({ isLoading, error, products }) {
   return (
     <div className="Products">
       {isLoading && <Loader />}
@@ -16,8 +16,10 @@ function Products({ isLoading, error, products = [] }) {
   );
 }
 
-function mapStateToProps(state) {
-  return { products: shop.selectors.getProducts(state) };
-}
+const enhance = connect(state => ({
+  products: shop.selectors.getProducts(state),
+  error: shop.selectors.getProductsError(state),
+  isLoading: shop.selectors.isLoadingProducts(state),
+}));
 
-export default connect(mapStateToProps)(Products);
+export default enhance(Products);

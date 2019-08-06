@@ -1,16 +1,17 @@
 import { MODULE_NAME } from './constants';
 
-export const getProducts = state => state[MODULE_NAME].products;
+export const getProducts = state => state[MODULE_NAME].products.data;
+export const isLoadingProducts = state => state[MODULE_NAME].products.loading;
+export const getProductsError = state => state[MODULE_NAME].products.error;
+
 export const getFavorites = state => state[MODULE_NAME].favorites;
 export const getCart = state => state[MODULE_NAME].cart;
 
-export const getProductById = (state, id) =>
-  state[MODULE_NAME].products.find(product => product.id === id);
+export const getProductById = (state, id) => getProducts(state).find(product => product.id === id);
 
 export const getCartProducts = state => {
-  const { cart, products } = state[MODULE_NAME];
-  const cartProducts = cart.map(item => {
-    const product = products.find(({ id }) => id === item.id);
+  const cartProducts = getCart(state).map(item => {
+    const product = getProducts(state).find(({ id }) => id === item.id);
 
     return { ...product, ...item };
   });
@@ -19,15 +20,13 @@ export const getCartProducts = state => {
 };
 
 export const getFavoriteProducts = state => {
-  const { products, favorites } = state[MODULE_NAME];
-  const favoriteProducts = products.filter(product => favorites.includes(product.id));
+  const favoriteProducts = getProducts(state).filter(product =>
+    getFavorites(state).includes(product.id),
+  );
 
   return favoriteProducts;
 };
 
-export const getCartItem = (state, id) => {
-  const { cart } = state[MODULE_NAME];
-  return cart.find(item => item.id === id);
-};
+export const getCartItem = (state, id) => getCart(state).find(item => item.id === id);
 
-export const isProductFavorite = (state, id) => state[MODULE_NAME].favorites.includes(id);
+export const isProductFavorite = (state, id) => getFavorites(state).includes(id);
