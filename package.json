@@ -10,6 +10,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux": "^4.0.4",
+    "redux-api-middleware": "^3.0.1",
     "redux-thunk": "^2.3.0",
     "reset-css": "^4.0.1"
   },
@@ -35,6 +36,7 @@
     ]
   },
   "devDependencies": {
-    "node-sass": "^4.12.0"
+    "node-sass": "^4.12.0",
+    "redux-devtools-extension": "^2.13.8"
   }
 }
